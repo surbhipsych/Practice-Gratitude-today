@@ -1,10 +1,11 @@
-Gratitude Box
+## Gratitude Box
+
 Created and maintained by [@surbhipsychtutor](https://www.youtube.com/@surbhipsychtutor) 💻📘
 
 These tools aim to make psychology **fun, visual, and easier to understand** through gamified, interactive experiences.
  🖥️ Web-based – runs on any browser!
 
-- ## 📺 Watch & Learn
+## 📺 Watch & Learn
 Check out video walkthroughs, tutorials, and explanations on my YouTube channel:  
 🎥 [SurbhiPsychTutor – YouTube](https://www.youtube.com/@surbhipsychtutor)
 
