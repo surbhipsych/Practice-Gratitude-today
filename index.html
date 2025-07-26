@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Gratitude Box </title>
+<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+<style>
+  body {
+    margin: 0;
+    padding: 2rem;
+    background: linear-gradient(to right, #fbeaff, #ffe5f7);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.4;
+    color: #333;
+  }
+
+  h1 {
+    color: #6a1b9a;
+    text-shadow: 2px 2px 5px #ffccff;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  /* Questions & Controls */
+  .question-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    max-width: 500px;
+    width: 100%;
+  }
+  #question {
+    font-size: 1.8rem;
+    color: #4a148c;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+  }
+  .question-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6ec4, #7873f5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+  }
+  .btn:hover,
+  .btn:focus {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    outline: none;
+  }
+
+  /* Reminder */
+  .reminder {
+    font-size: 1.2rem;
+    color: #8e24aa;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  /* Input area */
+  .input-area {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 500px;
+    width: 100%;
+  }
+  input[type="text"] {
+    flex: 1;
+    min-width: 200px;
+    max-width: 350px;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 2px solid #ba68c8;
+    font-size: 1.2rem;
+    box-shadow: inset 2px 2px 6px #f3e5f5;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: 'Inter', sans-serif;
+  }
+  input[type="text"]:focus {
+    border-color: #7b1fa2;
+    box-shadow: inset 2px 2px 8px #d1c4e9;
+    outline: none;
+  }
+
+  /* Jar container */
+  .jar-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  /* Jar styling */
+  .jar {
+    width: 340px;
+    min-height: 200px;
+    background: rgba(255,255,255,0.2);
+    border: 4px solid rgba(138, 43, 226, 0.4);
+    border-radius: 60px 60px 20px 20px;
+    padding: 15px;
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.6), inset 0 0 15px rgba(255,255,255,0.3);
+    backdrop-filter: blur(6px);
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+    overflow-y: auto;
+    max-height: 300px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  /* Notes styling */
+  .note {
+    display: inline-block;
+    background: #f0f0f0;
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    margin: 0.3rem;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    position: relative;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.2), inset 0 0 5px rgba(255,255,255,0.2);
+    backdrop-filter: blur(1px);
+    max-width: 45%;
+    word-wrap: break-word;
+    transition: all 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  /* Dynamic pastel colors will be inline */
+
+  /* Sparkles overlay for notes */
+  .note::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+    background-size: 8px 8px;
+    opacity: 0.2;
+    pointer-events: none;
+    border-radius: 8px;
+  }
+
+  /* Hover effects for notes */
+  .note:hover {
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.5), inset 0 0 10px rgba(255,255,255,0.4);
+    transform: scale(1.02);
+  }
+
+  /* Delete button on notes */
+  .note button {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #c62828;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .note button:hover,
+  .note button:focus {
+    color: #b71c1c;
+    transform: scale(1.2);
+    outline: none;
+  }
+
+  /* Blessing / Affirmation display */
+  .blessing-area {
+    margin-top: 2rem;
+    max-width: 500px;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #fff0f5;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-size: 1.2rem;
+    color: #6a1b9a;
+    text-align: center;
+    min-height: 60px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+  }
+
+  /* Responsive adjustments */
+  @media(max-width: 600px) {
+    body {
+      padding: 1rem;
+    }
+    #question {
+      font-size: 1.5rem;
+    }
+    .note {
+      max-width: 45%;
+    }
+  }
+</style>
+</head>
+<body>
+<h1>Gratitude Box</h1>
+
+<div class="question-section">
+  <div id="question">Loading question...</div>
+  <div class="question-controls">
+    <button class="btn" id="newQuestionBtn" aria-label="New Question">New Question</button>
+    <button class="btn" id="pickAffirmationBtn" aria-label="Pick an Affirmation">Pick an Affirmation</button>
+    <button class="btn" id="clearJarBtn" aria-label="Clear All Notes">Clear Jar</button>
+  </div>
+</div>
+
+<div class="reminder" id="questionReminder">Reflect on a moment and write your gratitude.</div>
+
+<div class="input-area">
+  <input type="text" id="gratitudeInput" placeholder="Write your note..." aria-label="Your note" />
+  <button class="btn" id="addNoteBtn" aria-label="Add Note">Add Note</button>
+</div>
+
+<div class="jar-container">
+  <div class="jar" id="jar"></div>
+</div>
+
+<div class="blessing-area" id="blessingDisplay">Click "Pick an Affirmation"</div>
+
+<script>
+  // Questions array
+  const questions = [
+    "What made you smile today?",
+    "What's your favorite memory?",
+    "Who are you grateful for?",
+    "What is a recent achievement?",
+    "What made you laugh today?",
+    "What are you looking forward to?",
+    "What's a kind thing you did?",
+    "What inspires you?",
+    "What's your current goal?",
+    "What is something you love about yourself?",
+    "What are you thankful for this week?",
+    "What's a recent compliment you received?",
+    "What motivates you daily?",
+    "Who brightened your day?",
+    "What is a new skill you'd like to learn?",
+    "What is a recent happy moment?",
+    "What's a positive habit you're building?",
+    "What are your strengths?",
+    "Who do you want to thank today?",
+    "What is a beautiful thing you saw?",
+    "What small thing made you grateful?",
+    "What is your favorite way to relax?",
+    "What are you proud of?",
+    "What is a recent good news?",
+    "What makes you feel loved?",
+    "What is your favorite quote?",
+    "What is a recent challenge you overcame?",
+    "Who do you admire?",
+    "What are you grateful for about today?",
+    "What simple pleasure did you enjoy?",
+    "What kindness did you witness?",
+    "What is a goal for tomorrow?",
+    "What makes you happy?",
+    "What was a fun moment today?",
+    "What are you grateful for in your life?",
+    "What is something new you tried?",
+    "Who made you smile recently?",
+    "What are you thankful for right now?",
+    "What small victory did you have?",
+    "What is something you’re proud of today?",
+    "What are you excited about?",
+    "What’s a good thing happening now?",
+    "What’s a recent moment of peace?",
+    "Who inspires you?",
+    "What is a reason to be happy today?",
+    "What positive thought do you want to remember?",
+    "What’s a simple joy you experienced?"
+  ];
+
+  // Affirmations array
+  const affirmations = [
+    "You are capable of great things.",
+    "Believe in yourself.",
+    "You are enough just as you are.",
+    "Every day is a new beginning.",
+    "You are stronger than you think.",
+    "Positivity is a choice.",
+    "You can achieve your dreams.",
+    "Embrace the good in your life.",
+    "Your potential is limitless.",
+    "Trust the journey.",
+    "You are worthy of love.",
+    "Happiness comes from within.",
+    "You have the power to change.",
+    "Stay positive and strong.",
+    "Your effort will pay off.",
+    "Focus on what you can control.",
+    "You are resilient.",
+    "Every step forward counts.",
+    "You deserve success.",
+    "Keep believing in yourself.",
+    "Your kindness makes a difference.",
+    "You are unique and special.",
+    "Let go of worries.",
+    "Today is a fresh start.",
+    "You are a source of light.",
+    "Keep moving forward.",
+    "You are loved more than you know.",
+    "Trust yourself.",
+    "Your dreams are valid.",
+    "Stay hopeful.",
+    "You have everything you need within.",
+    "Be your best self today.",
+    "You are a beacon of positivity.",
+    "Celebrate your progress.",
+    "Your voice matters.",
+    "You are full of potential.",
+    "Stay brave and bold.",
+    "You are a beautiful soul.",
+    "Keep your heart open.",
+    "You can handle anything.",
+    "Be kind to yourself.",
+    "Every moment is a new opportunity.",
+    "Believe in your strength.",
+    "You are an inspiration.",
+    "Stay grateful and humble.",
+    "Your kindness is powerful.",
+    "You are a miracle.",
+    "Dream big and dare to fail.",
+    "You have the power to create change."
+  ];
+
+  const questionEl = document.getElementById('question');
+  const blessingDisplay = document.getElementById('blessingDisplay');
+
+  document.getElementById('newQuestionBtn').addEventListener('click', () => {
+    const q = questions[Math.floor(Math.random() * questions.length)];
+    questionEl.textContent = q;
+  });
+
+  document.getElementById('pickAffirmationBtn').addEventListener('click', () => {
+    const a = affirmations[Math.floor(Math.random() * affirmations.length)];
+    blessingDisplay.textContent = a;
+  });
+
+  document.getElementById('clearJarBtn').addEventListener('click', () => {
+    // Replaced confirm() with a custom modal for better UX and consistency.
+    showCustomConfirm('Are you sure you want to clear all notes?', () => {
+      document.getElementById('jar').innerHTML = '';
+    });
+  });
+
+  // Custom confirmation modal functions
+  function showCustomConfirm(message, onConfirm) {
+    // Create modal elements
+    const modalOverlay = document.createElement('div');
+    modalOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      max-width: 90%;
+      width: 350px;
+    `;
+
+    const messageEl = document.createElement('p');
+    messageEl.textContent = message;
+    messageEl.style.cssText = `
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      color: #4a148c;
+    `;
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.cssText = `
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    `;
+
+    const confirmBtn = document.createElement('button');
+    confirmBtn.textContent = 'Yes, Clear';
+    confirmBtn.className = 'btn'; // Reuse existing button style
+    confirmBtn.style.cssText = `
+      background: linear-gradient(135deg, #ff6ec4, #7873f5);
+      padding: 10px 20px;
+      font-size: 1rem;
+    `;
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.textContent = 'Cancel';
+    cancelBtn.className = 'btn'; // Reuse existing button style
+    cancelBtn.style.cssText = `
+      background: #ccc;
+      color: #333;
+      padding: 10px 20px;
+      font-size: 1rem;
+    `;
+
+    confirmBtn.onclick = () => {
+      onConfirm();
+      document.body.removeChild(modalOverlay);
+    };
+
+    cancelBtn.onclick = () => {
+      document.body.removeChild(modalOverlay);
+    };
+
+    buttonContainer.appendChild(confirmBtn);
+    buttonContainer.appendChild(cancelBtn);
+    modalContent.appendChild(messageEl);
+    modalContent.appendChild(buttonContainer);
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+  }
+
+
+  // Pastel colors with no repeats (expanded to 100)
+  const pastelColors = [
+    '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#F7C5CC', '#E0BAFF', '#FFB8B8', '#B9FFB8', '#B8E0FF',
+    '#FFCCBA', '#D3FFBA', '#BAFFD1', '#FFCBA4', '#C4FFC4', '#FF9AA2', '#FFDAC1', '#E0F7FA', '#D1C4E9', '#F8BBD0',
+    '#B2DFDB', '#F4FF81', '#FFAB91', '#E6EE9C', '#FFCC80', '#A7FFEB', '#D0F8FF', '#C8E6C9', '#FFECB3', '#FFE0B2',
+    '#FFCDD2', '#F8BBD0', '#E1BEE7', '#D1C4E9', '#C5CAE9', '#BBDEFB', '#B3E5FC', '#B2EBF2', '#B2DFDB', '#C8E6C9',
+    '#DCEDC8', '#F0F4C3', '#FFF9C4', '#FFECB3', '#FFE0B2', '#FFCCBC', '#D7CCC8', '#CFD8DC', '#B0BEC5', '#90A4AE',
+    '#BDBDBD', '#E0E0E0', '#EEEEEE', '#F5F5F5', '#FAFAFA', '#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE', '#78909C',
+    '#FFD1DC', '#FFABAB', '#FFC3A0', '#FFDDC1', '#FFF8DC', '#E0FFFF', '#ADD8E6', '#87CEEB', '#B0E0E6', '#AFEEEE',
+    '#98FB98', '#90EE90', '#ADD8E6', '#B0C4DE', '#BFEFFF', '#D8BFD8', '#E6E6FA', '#F0F8FF', '#F8F8FF', '#F0FFF0',
+    '#F5FFFA', '#FFFAF0', '#FAEBD7', '#FFEBCD', '#FAF0E6', '#FDF5E6', '#FFF5EE', '#FFF0F5', '#FFEFD5', '#FFE4B5',
+    '#FFDAB9', '#FFDEAD', '#FFE4C4', '#F5DEB3', '#DEB887', '#D2B48C', '#BC8F8F', '#CD853F', '#F4A460', '#DAA520'
+  ];
+
+  // Keep track of used colors to ensure no immediate repeats
+  let availablePastelColors = [...pastelColors];
+
+  // Create note with color
+  function createNote(text) {
+    const note = document.createElement('div');
+    note.className = 'note';
+
+    // If all colors are used, reset the available colors
+    if (availablePastelColors.length === 0) {
+      availablePastelColors = [...pastelColors];
+    }
+
+    // Assign a random pastel color from the available list
+    const colorIndex = Math.floor(Math.random() * availablePastelColors.length);
+    const color = availablePastelColors.splice(colorIndex, 1)[0]; // Remove used color
+    note.style.backgroundColor = color;
+
+    // Note text
+    const noteText = document.createTextNode(text);
+    note.appendChild(noteText);
+
+    // Date line
+    const daySpan = document.createElement('div');
+    daySpan.className = 'day';
+    daySpan.style.fontSize = '0.7rem';
+    daySpan.style.marginTop = '0.2rem';
+    daySpan.style.color = '#4a148c';
+    daySpan.textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    note.appendChild(daySpan);
+
+    // Delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.setAttribute('aria-label', 'Delete note');
+    deleteBtn.innerHTML = '&times;';
+    deleteBtn.onclick = () => {
+      // Animate removal
+      note.style.transition = 'opacity 0.3s, transform 0.3s';
+      note.style.opacity = '0';
+      note.style.transform = 'scale(0.8)';
+      setTimeout(() => note.remove(), 300);
+    };
+    note.appendChild(deleteBtn);
+
+    // Hover effects
+    note.addEventListener('mouseenter', () => {
+      note.style.boxShadow = '0 0 15px rgba(138, 43, 226, 0.5), inset 0 0 10px rgba(255,255,255,0.4)';
+    });
+    note.addEventListener('mouseleave', () => {
+      note.style.boxShadow = '0 0 8px rgba(138, 43, 226, 0.2), inset 0 0 5px rgba(255,255,255,0.2)';
+    });
+
+    return note;
+  }
+
+  document.getElementById('addNoteBtn').addEventListener('click', () => {
+    const text = document.getElementById('gratitudeInput').value.trim();
+    if (text !== '') {
+      const note = createNote(text);
+      // Add to top with animation
+      note.style.opacity = '0';
+      note.style.transform = 'scale(0.8)';
+      document.getElementById('jar').prepend(note);
+      // Animate in
+      setTimeout(() => {
+        note.style.transition = 'opacity 0.3s, transform 0.3s';
+        note.style.opacity = '1';
+        note.style.transform = 'scale(1)';
+      }, 10);
+      document.getElementById('gratitudeInput').value = '';
+      document.getElementById('gratitudeInput').focus();
+    }
+  });
+
+  document.getElementById('gratitudeInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      document.getElementById('addNoteBtn').click();
+    }
+  });
+</script>
+</body>
+</html>
